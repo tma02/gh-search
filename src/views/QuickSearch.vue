@@ -53,8 +53,7 @@ export default {
     // Only actually query HTTP once every 1000ms
     setInterval(() => {
       if (this.query !== this.lastQuery) {
-        this.$http.get(`https://api.github.com/search/users?q=${this.query} in:name&sort=followers&per_page=5`)
-        .then((res) => {
+        this.$github.searchByName(this.query, 5).then((res) => {
           this.results = res.data.items
           this.loadingResults = false
         })
