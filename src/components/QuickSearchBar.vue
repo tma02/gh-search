@@ -27,6 +27,7 @@ export default {
 <style scoped>
 #quick-search-bar {
   width: 40rem;
+  margin-bottom: 1rem;
 }
 #quick-search-bar > input {
   width: 100%;
