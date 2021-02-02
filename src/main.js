@@ -14,7 +14,7 @@ Vue.prototype.$github = github
 
 const routes = [
   { path: '/', component: QuickSearch },
-  { path: '/results/:query', component: SearchResults },
+  { path: '/results/:query/:page?', component: SearchResults },
 ]
 
 new Vue({
