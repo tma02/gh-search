@@ -1,7 +1,7 @@
 <template>
   <div id="search-results">
     <search-bar :query="$route.params.query"></search-bar>
-    <h4>{{ total.toLocaleString() }} results</h4>
+    <h2>{{ total.toLocaleString() }} results</h2>
     <results-container>
       <quick-result v-for="result in results"
                     :key="result.id"
@@ -9,7 +9,7 @@
                     @click.native="openProfile(result.login)"
       ></quick-result>
     </results-container>
-    <pagination></pagination>
+    <pagination :page="page" :pages="pages"></pagination>
   </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
       results: [],
       loadingResults: true,
       total: 0,
-      page: this.$route.params.page || 0,
+      page: Number(this.$route.params.page) || 1,
       pages: 1,
     }
   },
@@ -35,12 +35,14 @@ export default {
       window.open(`https://github.com/${login}`)
     },
     queryApi() {
-      const perPage = 15;
+      this.page = Number(this.$route.params.page) || 1
+      const perPage = 10;
       this.$github.searchByName(this.$route.params.query, perPage, this.page).then((res) => {
         this.results = res.data.items
         this.total = res.data.total_count
-        this.pages = Math.ceil(this.total / perPage)
+        this.pages = Math.min(Math.ceil(this.total / perPage), 100)
         this.loadingResults = false
+        this.$forceUpdate()
       })
       .catch((err) => {
         console.log(err)
